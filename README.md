@@ -21,6 +21,7 @@ cp graylog/sample-docker-compose.yml graylog/docker-compose.yml
 ### Basic Configuration
 ##### Graylog
 - Navigate to the `graylog` folder, uncomment and edit the environment variables in `docker-compose.yml`.
+
 ##### Logstash
 - Navigate to `logstash/` folder, and make the necessary changes `sample-twitter-demo.conf`. You will require app keys with [Twitter](https://apps.twitter.com/).
 
@@ -50,6 +51,7 @@ docker-compose up
 - For additional patterns for log forwarding, modify the provided config files and logstash dockerfile. 
 - Remember to make the necessary changes in `Dockerfile` and `docker-compose.yml` (*exposing of ports, adding of configuration files / patterns*).
 - *Note: The start script in the logstash container will run all config files that are added to `/etc/logstash/conf.d`.*
+
 ##### Future
 - Please read [the docs](http://docs.graylog.org/en/1.2/pages/architecture.html) for scaling up Graylog in the future. 
 - You can experiment with more complex/advanced configurations of logstash when required.
