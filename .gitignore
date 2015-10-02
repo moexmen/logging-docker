@@ -1,6 +1,6 @@
 *.log
-/*/conf
-/*/sample-data
-/*/Dockerfile
-/*/docker-compose.yml
-/logstash/twitter-demo.conf
+*/conf
+*/sample-data
+*/Dockerfile
+*/docker-compose.yml
+logstash/twitter-demo.conf
