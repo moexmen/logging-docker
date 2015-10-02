@@ -1,0 +1,59 @@
+# Dockerfile for Logstash
+# File adapted from 
+# <https://github.com/spujadas/elk-docker>
+
+FROM phusion/baseimage
+MAINTAINER MOE-ESTL
+ENV REFRESHED_AT 2015-09-14
+
+###############################################################################
+#                                INSTALLATION
+###############################################################################
+
+### install Logstash
+
+ENV LOGSTASH_HOME /opt/logstash
+ENV LOGSTASH_PACKAGE logstash-1.5.4.tar.gz
+
+RUN apt-get update -qq \
+ && apt-get install -qqy openjdk-7-jdk \
+ && apt-get clean
+
+RUN mkdir ${LOGSTASH_HOME} \
+ && curl -O https://download.elasticsearch.org/logstash/logstash/${LOGSTASH_PACKAGE} \
+ && tar xzf ${LOGSTASH_PACKAGE} -C ${LOGSTASH_HOME} --strip-components=1 \
+ && rm -f ${LOGSTASH_PACKAGE} \
+ && groupadd -r logstash \
+ && useradd -r -s /usr/sbin/nologin -d ${LOGSTASH_HOME} -c "Logstash service user" -g logstash logstash \
+ && chown -R logstash:logstash ${LOGSTASH_HOME} \
+ && mkdir -p /var/log/logstash /etc/logstash/conf.d
+
+ADD ./logstash-init /etc/init.d/logstash
+RUN sed -i -e 's#^LS_HOME=$#LS_HOME='$LOGSTASH_HOME'#' /etc/init.d/logstash \
+ && chmod +x /etc/init.d/logstash
+
+###############################################################################
+#                               CONFIGURATION
+###############################################################################
+
+### configure Logstash
+
+# add filters and config files
+ADD ./sample-twitter-demo.conf /etc/logstash/conf.d/sample-twitter-demo.conf
+
+# add patterns (if any)
+# ADD ./nginx.pattern ${LOGSTASH_HOME}/patterns/nginx
+# RUN chown -R logstash:logstash ${LOGSTASH_HOME}/patterns
+
+
+###############################################################################
+#                                   START
+###############################################################################
+
+ADD ./start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+# expose ports for external systems to forward logs
+# EXPOSE 5000
+
+CMD [ "/usr/local/bin/start.sh" ]

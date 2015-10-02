@@ -1,0 +1,7 @@
+# Docker Compose file for Logstash
+
+ls:
+  container_name: ls
+  build: .
+  external_links:
+    - gl

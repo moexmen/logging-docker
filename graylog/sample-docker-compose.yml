@@ -1,0 +1,14 @@
+# Docker Compose file for Graylog
+
+gl:
+  container_name: gl
+  build: .
+  # environment:
+    # - GRAYLOG_TIMEZONE=<Timezone>
+    # - GRAYLOG_USERNAME=<default:admin>
+    # - GRAYLOG_PASSWORD=<default:admin>
+    # - GRAYLOG_SMTP_SERVER="example.com --port=123 --user=a@a.com --password=pass --from-email=estl@example.com --web-url=http://graylog.estl.moe"
+  ports:
+    # Web interface
+    - "9000:9000"
+    - "443:443"

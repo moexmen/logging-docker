@@ -1,0 +1,9 @@
+# Docker Compose file for Logstash
+
+ls:
+  container_name: ls
+  build: .
+  external_links:
+    - gl
+  # ports:
+    # - "5000:5000"
